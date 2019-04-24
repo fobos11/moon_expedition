@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
 Created on Sun Apr 14 12:59:56 2019
 
@@ -29,7 +29,6 @@ class moon_orbit_rocket(rocket):
         r,phi=self.coordinates[0],self.coordinates[1]
         m=self.mass
         mt=self.fuel
-        alpha=(alpha/180)*3.14
         for j in range(int(t/dt)):
             a1=(mu*self.speed_fuel)*ms.cos(alpha)/m-1.62+r*(u1**2)
             a2=((mu*self.speed_fuel)*ms.sin(alpha)/m-2*u0*u1)/r
