@@ -6,6 +6,7 @@ Created on Thu May  9 21:55:06 2019
 """
 import numpy as np
 import scipy.integrate as integrate
+import datetime as dt
 p=1
 mu0=246
 w=0
@@ -14,6 +15,7 @@ const1=398440000000000
 r0=384405
 w0=0.00000265
 const2=4892100640000*r0
+
 def fun1(t,y):
     return np.array([y[1],
                      (1/(ShIZO.mass-mu*t)*ShIZO.speed_fuel*mu*np.sin((180-y[0]-ShIZO.tangag-w*t)*3.14/180))/y[2]-2*y[3]*y[1]/y[2],
@@ -75,12 +77,11 @@ class moon:
 ShIZO=rocket(108000,62700,[6560000,0],[0,0.001188])
 Moon=moon(w0,[r0,0])
 
-
-f=open("output.txt",'x')
-f.write('w, t, phi, w(phi), r, u(r), angle, angle of Moon'+'\n')
+f=open(dt.datetime.now().strftime("%Y%m%d-%H%M%S")+"output.txt",'x')
+f.write('1(on)/0(off), w, t, phi, w(phi), r, u(r), angle, angle of Moon'+'\n')
 #first step
 while pb:
-    pb,p,w,t=map(float,input().split())
+    pb,p,w,t=map(float,input('1/0,on/off,w,t').split())
     if pb==2:
         ShIZO.mass+=-20000
         ShIZO.fuel=17700       
@@ -90,21 +91,27 @@ while pb:
     ShIZO.mass+=-mu*t
     ShIZO.tangag+=w*t
     Moon.coordinates[1]=Moon.moove(t)
-    f.write(str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
+    f.write(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
                 +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
                 ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1])+'\n')
+    print(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
+                +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
+                ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1]))
 
 #second step    
 while pb:
-    pb,p,w,t=map(float,input().split())
+    pb,p,w,t=map(float,input('2/1/0,on/off,w,t').split())
     mu=mu0*p
     ShIZO.coordinates[1],ShIZO.speeds[1],ShIZO.coordinates[0],ShIZO.speeds[0]=count2(t)
     ShIZO.mass+=-mu*t
     ShIZO.tangag+=w*t
     Moon.coordinates[1]=Moon.moove(t)
-    f.write(str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
+    f.write(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
                 +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
                 ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1])+'\n')
+    print(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
+                +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
+                ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1]))
 
 #change reference system(Moon coordinates=(0;0))
 const1=const2
@@ -118,14 +125,17 @@ ShIZO.coordinates[1]=0
 
 #third step
 while pb:
-    pb,p,w,t=map(float,input().split())
+    pb,p,w,t=map(float,input('1/0,on/off,w,t').split())
     mu=mu0*p
     ShIZO.coordinates[1],ShIZO.speeds[1],ShIZO.coordinates[0],ShIZO.speeds[0]=count1(t)
     ShIZO.mass+=-mu*t
     ShIZO.tangag+=w*t
-    f.write(str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
+    f.write(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
                 +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
                 ', '+str(ShIZO.tangag)+', (0;0)'+'\n')
+    print(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
+                +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
+                ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1]))
     
     
 f.close()    
