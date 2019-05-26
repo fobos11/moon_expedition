@@ -10,7 +10,9 @@ import datetime as dt
 p=1
 mu0=246
 w=0
-pb=1
+pb1=1
+pb2=1
+pb3=1
 const1=398440000000000
 r0=384405
 w0=0.00000265
@@ -80,9 +82,9 @@ Moon=moon(w0,[r0,0])
 f=open(dt.datetime.now().strftime("%Y%m%d-%H%M%S")+"output.txt",'x')
 f.write('1(on)/0(off), w, t, phi, w(phi), r, u(r), angle, angle of Moon'+'\n')
 #first step
-while pb:
-    pb,p,w,t=map(float,input('1/0,on/off,w,t').split())
-    if pb==2:
+while pb1:
+    pb1,p,w,t=map(float,input('2/1/0,on/off,w,t').split())
+    if pb1==2:
         ShIZO.mass+=-20000
         ShIZO.fuel=17700       
         mu0=31.4
@@ -99,8 +101,8 @@ while pb:
                 ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1]))
 
 #second step    
-while pb:
-    pb,p,w,t=map(float,input('2/1/0,on/off,w,t').split())
+while pb2:
+    pb2,p,w,t=map(float,input('1/0,on/off,w,t').split())
     mu=mu0*p
     ShIZO.coordinates[1],ShIZO.speeds[1],ShIZO.coordinates[0],ShIZO.speeds[0]=count2(t)
     ShIZO.mass+=-mu*t
@@ -115,8 +117,10 @@ while pb:
 
 #change reference system(Moon coordinates=(0;0))
 const1=const2
-ShIZO.speeds[0]*=-np.sqrt(1-((np.sin(180-ShIZO.coordinates[1]+Moon.coordinates[1])*r0)/((ShIZO.coordinates[0]**2+r0**2
-            -2*ShIZO.coordinates[0]*r0*np.cos(ShIZO.coordinates[1]-Moon.coordinates[1]))**0.5))**2)
+ShIZO.speeds[0]*=-np.sqrt(1-((np.sin(180-ShIZO.coordinates[1]+
+            Moon.coordinates[1])*r0)/((ShIZO.coordinates[0]**2+r0**2
+            -2*ShIZO.coordinates[0]*r0*np.cos(ShIZO.coordinates[1]-
+                                Moon.coordinates[1]))**0.5))**2)
 ShIZO.speeds[1]+=-w0
 ShIZO.coordinates[0]=ShIZO.coordinates[0]**2+r0**2-2*ShIZO.coordinates[0]*r0*np.cos(ShIZO.coordinates[1]-Moon.coordinates[1])
 ShIZO.coordinates[1]=0
@@ -124,8 +128,8 @@ ShIZO.coordinates[1]=0
 
 
 #third step
-while pb:
-    pb,p,w,t=map(float,input('1/0,on/off,w,t').split())
+while pb3:
+    pb3,p,w,t=map(float,input('1/0,on/off,w,t').split())
     mu=mu0*p
     ShIZO.coordinates[1],ShIZO.speeds[1],ShIZO.coordinates[0],ShIZO.speeds[0]=count1(t)
     ShIZO.mass+=-mu*t
