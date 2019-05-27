@@ -79,6 +79,7 @@ class moon:
 ShIZO=rocket(108000,62700,[6636865,0],[-4.5,0.0011906])
 Moon=moon(w0,[r0,0])
 
+
 f=open(dt.datetime.now().strftime("%Y%m%d-%H%M%S")+"output.txt",'x')
 f.write('1(on)/0(off), w, t, phi, w(phi), r, u(r), angle, angle of Moon'+'\n')
 #first step
