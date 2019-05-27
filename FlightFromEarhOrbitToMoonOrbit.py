@@ -14,22 +14,22 @@ pb1=1
 pb2=1
 pb3=1
 const1=398440000000000
-r0=384405
+r0=384405000
 w0=0.00000265
 const2=4892100640000*r0
 
 def fun1(t,y):
     return np.array([y[1],
-                     (1/(ShIZO.mass-mu*t)*ShIZO.speed_fuel*mu*np.sin((180-y[0]-ShIZO.tangag-w*t)*3.14/180))/y[2]-2*y[3]*y[1]/y[2],
-                     y[3],1/(ShIZO.mass-mu*t)*ShIZO.speed_fuel*mu*np.cos((180-y[0]-ShIZO.tangag-w*t)*3.14/180)-(const1/(y[2]**2))+y[2]*(y[1]**2)])
+                     (1/(ShIZO.mass-mu*t)*ShIZO.speed_fuel*mu*np.sin((180-ShIZO.tangag-w*t)*3.14/180-y[0]))/y[2]-2*y[3]*y[1]/y[2],
+                     y[3],1/(ShIZO.mass-mu*t)*ShIZO.speed_fuel*mu*np.cos((180-ShIZO.tangag-w*t)*3.14/180-y[0])-(const1/(y[2]**2))+y[2]*(y[1]**2)])
 #right part of ordinary system of diferencial equations for flights near to Earth/Moon
 
 def fun2(t,y):
     return np.array([y[1],
-                     (1/(ShIZO.mass-mu*t)*ShIZO.speed_fuel*mu*np.sin((180-y[0]-ShIZO.tangag-w*t)*3.14/180))/y[2]-2*y[3]*y[1]/(y[2])
-                     +((const2*np.sin(180-y[0]+Moon.coordinates[1]+w0*t)/(((y[2]**2+r0**2-2*y[2]*r0*np.cos(y[0]-Moon.coordinates[1]-w0*t)))**1.5)))/y[2],
-                     y[3],1/(ShIZO.mass-mu*t)*ShIZO.speed_fuel*mu*np.cos((180-y[0]-ShIZO.tangag-w*t)*3.14/180)-const1/(y[2]**2)+y[2]*(y[1]**2)
-                     +(((const2/r0)*np.sqrt(1-((np.sin(180-y[0]+Moon.coordinates[1]+w0*t)*r0)/((y[2]**2+r0**2-2*y[2]*r0*np.cos(y[0]-Moon.coordinates[1]-w0*t))**0.5))**2))
+                     (1/(ShIZO.mass-mu*t)*ShIZO.speed_fuel*mu*np.sin((180-ShIZO.tangag-w*t)*3.14/180-y[0]))/y[2]-2*y[3]*y[1]/(y[2])
+                     +((const2*np.sin(3.14-y[0]+Moon.coordinates[1]+w0*t)/(((y[2]**2+r0**2-2*y[2]*r0*np.cos(y[0]-Moon.coordinates[1]-w0*t)))**1.5)))/y[2],
+                     y[3],1/(ShIZO.mass-mu*t)*ShIZO.speed_fuel*mu*np.cos(3.14-y[0]-ShIZO.tangag-w*t)-const1/(y[2]**2)+y[2]*(y[1]**2)
+                     +(((const2/r0)*np.sqrt(1-((np.sin(3.14-y[0]+Moon.coordinates[1]+w0*t)*r0)/((y[2]**2+r0**2-2*y[2]*r0*np.cos(y[0]-Moon.coordinates[1]-w0*t))**0.5))**2))
                      /(y[2]**2+r0**2-2*y[2]*r0*np.cos(y[0]-Moon.coordinates[1]-w0*t)))])    
 #right part of ordinary system of diferencial equations for flights between Earth and Moon
 def count1(t):
@@ -76,7 +76,7 @@ class moon:
     def moove(self,t):
         return self.velosity*t
     
-ShIZO=rocket(108000,62700,[6560000,0],[0,0.001188])
+ShIZO=rocket(108000,62700,[6636865,0],[-4.5,0.0011906])
 Moon=moon(w0,[r0,0])
 
 f=open(dt.datetime.now().strftime("%Y%m%d-%H%M%S")+"output.txt",'x')
