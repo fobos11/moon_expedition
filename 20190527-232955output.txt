@@ -1,0 +1,1 @@
+1(on)/0(off), w, t, phi, w(phi), r, u(r), angle, angle of Moon

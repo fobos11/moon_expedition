@@ -34,7 +34,7 @@ def fun2(t,y):
 #right part of ordinary system of diferencial equations for flights between Earth and Moon
 def count1(t):
     b=integrate.RK45(fun1,0,np.array([ShIZO.coordinates[1],
-                         ShIZO.speeds[1],ShIZO.coordinates[0],0]),t)
+                         ShIZO.speeds[1],ShIZO.coordinates[0],ShIZO.speeds[0]]),t)
     while b.status!='finished' and b.status!='failed' :
         b.step()
     if b.status=='finished':
@@ -44,7 +44,7 @@ def count1(t):
 
 def count2(t):
     b=integrate.RK45(fun2,0,np.array([ShIZO.coordinates[1],
-                         ShIZO.speeds[1],ShIZO.coordinates[0],0]),t)
+                         ShIZO.speeds[1],ShIZO.coordinates[0],ShIZO.speeds[0]]),t)
     while b.status!='finished' and b.status!='failed' :
         b.step()
     if b.status=='finished':
@@ -54,7 +54,7 @@ def count2(t):
 
 class rocket:
     
-    def __init__(self,mass,fuel,coordinates, speeds,speed_fuel=3660,turning_speed=1,tangag=0):
+    def __init__(self,mass,fuel,coordinates, speeds,speed_fuel=4130,turning_speed=1,tangag=90):
         self.mass=mass
         self.fuel=fuel
         self.coordinates=coordinates
@@ -85,8 +85,9 @@ f.write('1(on)/0(off), w, t, phi, w(phi), r, u(r), angle, angle of Moon'+'\n')
 while pb1:
     pb1,p,w,t=map(float,input('2/1/0,on/off,w,t').split())
     if pb1==2:
-        ShIZO.mass+=-20000
-        ShIZO.fuel=17700       
+        ShIZO.mass=43000
+        ShIZO.fuel=17700  
+        ShIZO.speed_fuel=3050
         mu0=31.4
     mu=mu0*p
     ShIZO.coordinates[1],ShIZO.speeds[1],ShIZO.coordinates[0],ShIZO.speeds[0]=count1(t)
@@ -96,7 +97,7 @@ while pb1:
     f.write(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
                 +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
                 ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1])+'\n')
-    print(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
+    print(str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
                 +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
                 ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1]))
 
@@ -111,18 +112,18 @@ while pb2:
     f.write(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
                 +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
                 ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1])+'\n')
-    print(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
+    print(str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
                 +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
                 ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1]))
 
 #change reference system(Moon coordinates=(0;0))
 const1=const2
-ShIZO.speeds[0]*=-np.sqrt(1-((np.sin(180-ShIZO.coordinates[1]+
+ShIZO.speeds[0]*=-np.sqrt(1-((np.sin(3.14-ShIZO.coordinates[1]+
             Moon.coordinates[1])*r0)/((ShIZO.coordinates[0]**2+r0**2
             -2*ShIZO.coordinates[0]*r0*np.cos(ShIZO.coordinates[1]-
                                 Moon.coordinates[1]))**0.5))**2)
 ShIZO.speeds[1]+=-w0
-ShIZO.coordinates[0]=ShIZO.coordinates[0]**2+r0**2-2*ShIZO.coordinates[0]*r0*np.cos(ShIZO.coordinates[1]-Moon.coordinates[1])
+ShIZO.coordinates[0]=(ShIZO.coordinates[0]**2+r0**2-2*ShIZO.coordinates[0]*r0*np.cos(ShIZO.coordinates[1]-Moon.coordinates[1]))**0.5
 ShIZO.coordinates[1]=0
 
 
@@ -137,7 +138,7 @@ while pb3:
     f.write(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
                 +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
                 ', '+str(ShIZO.tangag)+', (0;0)'+'\n')
-    print(str(p)+', '+str(w)+', '+str(t)+', '+str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
+    print(str(ShIZO.coordinates[1])+', '+str(ShIZO.speeds[1])+', '
                 +str(ShIZO.coordinates[0])+', '+str(ShIZO.speeds[0])+', '+str(ShIZO.mass)+
                 ', '+str(ShIZO.tangag)+', '+str(Moon.coordinates[1]))
     
